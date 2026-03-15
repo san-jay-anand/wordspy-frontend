@@ -131,14 +131,13 @@ export default function App() {
   setGame(g);
   setPlayerId(pid);
   setIsHost(host);
-  // Only connect socket when joining a room
+  setScreen("waiting");
   try {
     socket.connect();
     socket.emit("joinLobbyRoom", { lobbyCode: g.code, playerId: pid });
   } catch (err) {
-    console.log("Socket connection failed, continuing without realtime");
+    console.log("Socket unavailable on Vercel");
   }
-  setScreen("waiting");
 };
 
   const handleStartGame  = (rounds)   => socket.emit("startGame", { lobbyCode: game.code, totalRounds: rounds });
