@@ -128,12 +128,18 @@ export default function App() {
 
   // Handlers
   const handleJoined = ({ game: g, playerId: pid, isHost: host }) => {
-    setGame(g);
-    setPlayerId(pid);
-    setIsHost(host);
+  setGame(g);
+  setPlayerId(pid);
+  setIsHost(host);
+  // Only connect socket when joining a room
+  try {
+    socket.connect();
     socket.emit("joinLobbyRoom", { lobbyCode: g.code, playerId: pid });
-    setScreen("waiting");
-  };
+  } catch (err) {
+    console.log("Socket connection failed, continuing without realtime");
+  }
+  setScreen("waiting");
+};
 
   const handleStartGame  = (rounds)   => socket.emit("startGame", { lobbyCode: game.code, totalRounds: rounds });
   const handleSubmitDesc = (text)     => { setMySubmitted(true); socket.emit("submitDescription", { lobbyCode: game.code, playerId, text }); };
