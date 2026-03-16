@@ -1,8 +1,6 @@
 import { io } from "socket.io-client";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-
-const socket = io(BACKEND_URL, {
+const socket = io("https://wordspy-backend-qth7.onrender.com", {
   transports: ["polling", "websocket"],
   autoConnect: false,
   reconnection: true,

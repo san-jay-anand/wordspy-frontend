@@ -4,7 +4,8 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
-const API    = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+//const API    = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+const API = "https://wordspy-backend-qth7.onrender.com";
 const COLORS = ["#e63946","#457b9d","#2ec4b6","#ff9f1c","#8338ec","#06d6a0","#ef476f","#118ab2"];
 
 export default function LeaderboardPage({ onBack }) {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const API = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-
+//const API = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+const API = "https://wordspy-backend-qth7.onrender.com";
 export default function Lobby({ onJoined }) {
   const [tab, setTab]                 = useState("create");
   const [playerName, setPlayerName]   = useState("");
