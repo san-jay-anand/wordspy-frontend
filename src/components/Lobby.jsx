@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const API = "http://localhost:5000";
+const API = "https://wordspy-backend-qth7.onrender.com";
 
 export default function Lobby({ onJoined }) {
   const [tab, setTab]                 = useState("create");
