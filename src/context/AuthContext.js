@@ -3,8 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
-//const API = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-const API = "https://wordspy-backend-qth7.onrender.com";
+const API = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 export function AuthProvider({ children }) {
   const [user, setUser]       = useState(null);
   const [token, setToken]     = useState(() => localStorage.getItem("wordspy_token"));
