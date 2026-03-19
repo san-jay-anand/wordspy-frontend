@@ -20,7 +20,6 @@ export function AuthProvider({ children }) {
 
   const fetchProfile = async () => {
   try {
-    await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay to see loading
     const { data } = await axios.get(`${API}/api/auth/profile`);
     setUser(data.user);
   } catch {
@@ -28,6 +27,7 @@ export function AuthProvider({ children }) {
   } finally {
     setLoading(false);
   }
+};
 };
 
   const login = async (username, password) => {
