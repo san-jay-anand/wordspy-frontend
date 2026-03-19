@@ -550,3 +550,48 @@ body {
 .impostor-result { color:var(--text2); font-size:.9rem; max-width:380px; line-height:1.7; }
 .leaderboard { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; width:100%; max-width:420px; margin-bottom:1rem; animation:fadeUp .6s ease .2s both; }
 .leaderboard h3 { font-family:var(--head); font-size:.7rem; color:var(--text2); letter-spacing:.12em; text-transform:uppercase; margin-bottom:1.2rem; }
+/* ── Sound & Animation additions ─────────────────────────── */
+
+/* Shake animation for wrong vote */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  10%,50%,90% { transform: translateX(-8px); }
+  30%,70% { transform: translateX(8px); }
+}
+.shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+
+/* Pop animation for descriptions */
+@keyframes popIn {
+  0%   { opacity:0; transform: scale(0.8) translateY(10px); }
+  70%  { transform: scale(1.05) translateY(-2px); }
+  100% { opacity:1; transform: scale(1) translateY(0); }
+}
+.pop-in { animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1) both; }
+
+/* Your turn flash */
+@keyframes flash {
+  0%,100% { opacity:1; }
+  50%      { opacity:0.4; }
+}
+.your-turn-banner { animation: pulse 2s ease-in-out infinite, flash 0.5s ease 0s 3; }
+
+/* Slide in from left for new round */
+@keyframes slideIn {
+  from { opacity:0; transform: translateX(-30px); }
+  to   { opacity:1; transform: translateX(0); }
+}
+.slide-in { animation: slideIn 0.5s cubic-bezier(.34,1.56,.64,1) both; }
+
+/* Winner glow pulse */
+@keyframes winGlow {
+  0%,100% { box-shadow: 0 0 20px var(--success); }
+  50%      { box-shadow: 0 0 60px var(--success), 0 0 100px var(--success); }
+}
+.crew-win { animation: winGlow 1.5s ease-in-out infinite !important; }
+.imp-win  { animation: winGlow 1.5s ease-in-out infinite !important; }
+
+/* Vote button shake on wrong vote */
+.vote-player-btn.shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  border-color: var(--danger) !important;
+}

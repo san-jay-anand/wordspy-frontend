@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { playPop } from "../utils/sounds";
 export default function VoteScreen({
   descriptions = [],
   players = [],
@@ -13,10 +13,11 @@ export default function VoteScreen({
   const [voted, setVoted] = useState(null);
 
   const handleVote = (targetId) => {
-    if (voted) return;
-    setVoted(targetId);
-    onVote(targetId);
-  };
+  if (voted) return;
+  setVoted(targetId);
+  playPop();
+  onVote(targetId);
+};
 
   return (
     <div className="vote-page">

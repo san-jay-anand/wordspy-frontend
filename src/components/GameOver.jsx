@@ -1,8 +1,19 @@
 import React from "react";
+import { useEffect } from "react";
+import { playWin, playLose } from "../utils/sounds";
+import { launchConfetti } from "../utils/confetti";
 
 export default function GameOver({ impostorName, impostorCaught, players, onPlayAgain }) {
   const sorted = [...players].sort((a, b) => b.score - a.score);
 
+  useEffect(() => {
+  if (impostorCaught) {
+    playWin();
+    launchConfetti();
+  } else {
+    playLose();
+  }
+}, []);
   return (
     <div className="gameover-page">
       <div className={`gameover-banner ${impostorCaught ? "crew-win" : "imp-win"}`}>

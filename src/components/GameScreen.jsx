@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import socket from "../socket";
+import { playTick, playWarningTick, playYourTurn, playPop } from "../utils/sounds";
 
 export default function GameScreen({
   role, word, round, totalRounds,
@@ -8,18 +9,18 @@ export default function GameScreen({
   currentTurnName: initialTurnName,
   onSubmit,
 }) {
-  const [text, setText]           = useState("");
-  const [done, setDone]           = useState(false);
-  const [timeLeft, setTimeLeft]   = useState(60);
-  const [revealedDescs, setRevealedDescs]         = useState([]);
-  const [currentTurnId, setCurrentTurnId]         = useState(initialTurnId || null);
-  const [currentTurnName, setCurrentTurnName]     = useState(initialTurnName || "");
+  const [text, setText]                       = useState("");
+  const [done, setDone]                       = useState(false);
+  const [timeLeft, setTimeLeft]               = useState(60);
+  const [revealedDescs, setRevealedDescs]     = useState([]);
+  const [currentTurnId, setCurrentTurnId]     = useState(initialTurnId || null);
+  const [currentTurnName, setCurrentTurnName] = useState(initialTurnName || "");
   const timerRef = useRef(null);
 
   const isMyTurn   = currentTurnId?.toString() === playerId?.toString();
   const isImpostor = role === "impostor";
 
-  // Sync when parent sends initial turn info
+  // Sync initial turn
   useEffect(() => {
     if (initialTurnId) {
       setCurrentTurnId(initialTurnId);
@@ -37,6 +38,7 @@ export default function GameScreen({
     });
 
     socket.on("descriptionRevealed", ({ playerId: pid, playerName, text: t }) => {
+      playPop();
       setRevealedDescs(prev => {
         if (prev.find(d => d.playerId?.toString() === pid?.toString())) return prev;
         return [...prev, { playerId: pid, playerName, text: t }];
@@ -62,11 +64,20 @@ export default function GameScreen({
           onSubmit("...");
           return 0;
         }
+        if (t <= 5) playWarningTick();
+        else if (t <= 10) playTick();
         return t - 1;
       });
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [isMyTurn, currentTurnId, done]);
+
+  // Your turn notification
+  useEffect(() => {
+    if (isMyTurn && !done) {
+      playYourTurn();
+    }
+  }, [isMyTurn, currentTurnId]);
 
   const handleSubmit = () => {
     if (!text.trim() || done) return;
@@ -146,7 +157,7 @@ export default function GameScreen({
       {revealedDescs.length > 0 && (
         <div className="desc-board" style={{ marginTop: "1rem", width: "100%", maxWidth: "600px" }}>
           {revealedDescs.map((d, i) => (
-            <div key={i} className={`desc-card ${d.playerId?.toString() === playerId?.toString() ? "mine-desc" : ""}`}>
+            <div key={i} className={`desc-card pop-in ${d.playerId?.toString() === playerId?.toString() ? "mine-desc" : ""}`}>
               <div className="desc-author">
                 <div className="chip-av" style={{ background: avatarColor(i) }}>
                   {(d.playerName || "?")[0].toUpperCase()}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { playWhoosh } from "../utils/sounds";
 export default function RoundResult({ eliminatedName, wasImpostor, players, round, tally }) {
   const [countdown, setCountdown] = useState(5);
 
@@ -7,10 +7,12 @@ export default function RoundResult({ eliminatedName, wasImpostor, players, roun
     const t = setInterval(() => setCountdown(c => c - 1), 1000);
     return () => clearInterval(t);
   }, []);
-
+useEffect(() => {
+  playWhoosh();
+}, []);
   return (
     <div className="result-page">
-      <div className={`result-banner ${wasImpostor ? "caught" : "survived"}`}>
+      <div className={`result-banner slide-in ${wasImpostor ? "caught" : "survived"}`}>
         {wasImpostor ? "🎉 Impostor Caught!" : "😈 Impostor Survived!"}
       </div>
       <div className="elim-card">
