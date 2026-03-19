@@ -19,15 +19,16 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const fetchProfile = async () => {
-    try {
-      const { data } = await axios.get(`${API}/api/auth/profile`);
-      setUser(data.user);
-    } catch {
-      logout();
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay to see loading
+    const { data } = await axios.get(`${API}/api/auth/profile`);
+    setUser(data.user);
+  } catch {
+    logout();
+  } finally {
+    setLoading(false);
+  }
+};
 
   const login = async (username, password) => {
     const { data } = await axios.post(`${API}/api/auth/login`, { username, password });
