@@ -12,6 +12,7 @@ import VoteScreen      from "./components/VoteScreen";
 import RoundResult     from "./components/RoundResult";
 import GameOver        from "./components/GameOver";
 import "./styles/main.css";
+import LoadingScreen from "./components/LoadingScreen";
 
 export default function App() {
   const { user, loading, updateStats } = useAuth();
@@ -110,12 +111,7 @@ export default function App() {
     setCurrentTurnId(null); setCurrentTurnName("");
   };
 
-  if (loading) return (
-    <div className="loading-screen">
-      <div className="loading-spinner"/>
-      <p>Loading…</p>
-    </div>
-  );
+  if (loading) return <LoadingScreen />;
 
   if (!user) return <AuthPage />;
 

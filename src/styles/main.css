@@ -193,11 +193,154 @@ body {
 .slider::-webkit-slider-thumb:hover { transform:scale(1.2); }
 .section-title { font-family:var(--head); font-size:.7rem; letter-spacing:.12em; color:var(--text2); text-transform:uppercase; margin-bottom:.75rem; }
 
-/* ── Loading ──────────────────────────────────────────────── */
-.loading-screen { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; background:var(--bg); color:var(--text2); }
-.loading-spinner { width:44px; height:44px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 1s linear infinite; }
+/* ══════════════════════════════════════════════════════════
+   LOADING SCREEN — Spectacular S Animation
+   ══════════════════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════════
+@keyframes loading-spin-cw  { to { transform: rotate(360deg); } }
+@keyframes loading-spin-ccw { to { transform: rotate(-360deg); } }
+@keyframes loading-pulse    { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.08); opacity: .85; } }
+@keyframes loading-glow     { 0%,100% { text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent); } 50% { text-shadow: 0 0 40px var(--accent), 0 0 80px var(--accent), 0 0 120px var(--accent); } }
+@keyframes loading-orbit    { from { transform: rotate(0deg) translateX(52px) rotate(0deg); } to { transform: rotate(360deg) translateX(52px) rotate(-360deg); } }
+@keyframes loading-orbit-r  { from { transform: rotate(180deg) translateX(52px) rotate(-180deg); } to { transform: rotate(540deg) translateX(52px) rotate(-540deg); } }
+@keyframes loading-fade-up  { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient background orbs */
+.loading-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+.loading-orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(124,106,245,.18) 0%, transparent 65%);
+  top: -200px; left: -200px;
+  animation: orb 14s ease-in-out infinite;
+}
+.loading-orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(31,207,180,.12) 0%, transparent 65%);
+  bottom: -200px; right: -200px;
+  animation: orb 18s ease-in-out infinite reverse;
+}
+
+/* Main S wrapper */
+.loading-letter-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Spinning rings */
+.loading-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+.loading-ring-1 {
+  inset: 0;
+  border-top-color: var(--accent);
+  border-right-color: var(--accent);
+  animation: loading-spin-cw 1.4s cubic-bezier(.68,-.55,.27,1.55) infinite;
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+.loading-ring-2 {
+  inset: 10px;
+  border-bottom-color: var(--success);
+  border-left-color: var(--success);
+  animation: loading-spin-ccw 1.8s cubic-bezier(.68,-.55,.27,1.55) infinite;
+  box-shadow: 0 0 12px rgba(31,207,180,.3);
+}
+
+/* Orbiting particles */
+.loading-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  margin: -4px 0 0 -4px;
+}
+.loading-particle-1 {
+  background: var(--accent);
+  animation: loading-orbit 2s linear infinite;
+  box-shadow: 0 0 8px var(--accent);
+}
+.loading-particle-2 {
+  background: var(--success);
+  animation: loading-orbit-r 2.5s linear infinite;
+  box-shadow: 0 0 8px var(--success);
+}
+.loading-particle-3 {
+  background: var(--warn);
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+  animation: loading-orbit 3s linear infinite .5s;
+  box-shadow: 0 0 6px var(--warn);
+}
+.loading-particle-4 {
+  background: var(--danger);
+  width: 5px; height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  animation: loading-orbit-r 3.5s linear infinite 1s;
+  box-shadow: 0 0 6px var(--danger);
+}
+
+/* The S letter */
+.loading-s {
+  font-family: var(--head);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: .02em;
+  line-height: 1;
+  animation: loading-pulse 2s ease-in-out infinite, loading-glow 2s ease-in-out infinite;
+  z-index: 2;
+  position: relative;
+}
+
+/* Text below */
+.loading-text-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  z-index: 1;
+  animation: loading-fade-up .8s ease .2s both;
+}
+.loading-title {
+  font-family: var(--head);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: .08em;
+}
+.loading-title span { color: var(--accent); }
+.loading-sub {
+  font-size: .9rem;
+  color: var(--text2);
+  letter-spacing: .1em;
+  min-width: 80px;
+  text-align: center;
+}═══════════════════════════════════════════════════════════
    AUTH PAGE — Spectacular
    ═══════════════════════════════════════════════════════════ */
 .auth-page {
